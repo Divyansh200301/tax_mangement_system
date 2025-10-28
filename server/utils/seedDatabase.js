@@ -1,0 +1,206 @@
+const mongoose = require('mongoose');
+const { GSTConfig, TaxResource, TaxDeadline } = require('../models/TaxConfig');
+
+async function seedDatabase() {
+  try {
+    // Seed GST Rates
+    const gstRates = [
+      {
+        category: 'essential',
+        rate: 0,
+        items: ['Fresh vegetables', 'Fresh fruits', 'Fresh milk', 'Eggs', 'Curd', 'Bread', 'Salt', 'Jaggery'],
+        description: 'Essential food items - Nil rated'
+      },
+      {
+        category: 'essential',
+        rate: 5,
+        items: ['Sugar', 'Tea', 'Coffee', 'Edible oils', 'Coal', 'Domestic LPG', 'Life-saving drugs', 'Kerosene'],
+        description: 'Essential commodities - 5% GST'
+      },
+      {
+        category: 'standard',
+        rate: 12,
+        items: ['Processed food', 'Computers', 'Mobile phones under ₹15,000', 'Butter', 'Cheese', 'Ghee', 'Ayurvedic medicines'],
+        description: 'Standard rate goods - 12% GST'
+      },
+      {
+        category: 'standard',
+        rate: 18,
+        items: ['Most goods and services', 'IT services', 'Telecom services', 'Financial services', 'Restaurants (non-AC)', 'Soap', 'Toothpaste'],
+        description: 'Default rate for most items - 18% GST'
+      },
+      {
+        category: 'luxury',
+        rate: 28,
+        items: ['Luxury cars', 'Two-wheelers above 350cc', 'AC restaurants', 'Hotels (₹7,500+)', 'Cinema tickets (₹100+)', 'Cigarettes', 'Aerated drinks'],
+        description: 'Luxury and sin goods - 28% GST'
+      }
+    ];
+
+    await GSTConfig.deleteMany({});
+    await GSTConfig.insertMany(gstRates);
+    console.log('✅ GST rates seeded');
+
+    // Seed Tax Resources
+    const taxResources = [
+      {
+        type: 'income_tax',
+        title: 'Income Tax e-Filing Portal',
+        description: 'Official portal for filing income tax returns',
+        officialUrl: 'https://www.incometax.gov.in/iec/foportal',
+        priority: 10
+      },
+      {
+        type: 'income_tax',
+        title: 'Download Form 26AS',
+        description: 'Tax credit statement showing TDS/TCS',
+        officialUrl: 'https://www.incometax.gov.in/iec/foportal',
+        priority: 9
+      },
+      {
+        type: 'pan',
+        title: 'Apply for PAN Card',
+        description: 'NSDL PAN application portal',
+        officialUrl: 'https://www.onlineservices.nsdl.com/paam/endUserRegisterContact.html',
+        priority: 8
+      },
+      {
+        type: 'gst',
+        title: 'GST Portal',
+        description: 'Official GST registration and filing portal',
+        officialUrl: 'https://www.gst.gov.in/',
+        priority: 10
+      },
+      {
+        type: 'gst',
+        title: 'GST Rate Finder',
+        description: 'Find applicable GST rates for goods/services',
+        officialUrl: 'https://cbic-gst.gov.in/gst-goods-services-rates.html',
+        priority: 9
+      },
+      {
+        type: 'tds',
+        title: 'TDS Return Filing',
+        description: 'TRACES - TDS Reconciliation Analysis and Correction Enabling System',
+        officialUrl: 'https://www.tdscpc.gov.in/',
+        priority: 8
+      },
+      {
+        type: 'challan',
+        title: 'Pay Tax Online - Income Tax',
+        description: 'Pay advance tax, self-assessment tax',
+        officialUrl: 'https://onlineservices.tin.egov-nsdl.com/etaxnew/tdsnontds.jsp',
+        priority: 7
+      },
+      {
+        type: 'challan',
+        title: 'Pay GST Online',
+        description: 'GST payment portal',
+        officialUrl: 'https://www.gst.gov.in/',
+        priority: 7
+      },
+      {
+        type: 'aadhaar',
+        title: 'Link Aadhaar with PAN',
+        description: 'Mandatory linking of Aadhaar with PAN',
+        officialUrl: 'https://www.incometax.gov.in/iec/foportal/help/individual/return-applicable-1',
+        priority: 6
+      },
+      {
+        type: 'refund',
+        title: 'Track Income Tax Refund',
+        description: 'Check status of your tax refund',
+        officialUrl: 'https://tin.tin.nsdl.com/oltas/refundstatuslogin.html',
+        priority: 8
+      },
+      {
+        type: 'compliance',
+        title: 'MCA Portal',
+        description: 'Ministry of Corporate Affairs - Company filings',
+        officialUrl: 'https://www.mca.gov.in/',
+        priority: 5
+      }
+    ];
+
+    await TaxResource.deleteMany({});
+    await TaxResource.insertMany(taxResources);
+    console.log('✅ Tax resources seeded');
+
+    // Seed Tax Deadlines (FY 2024-25)
+    const deadlines = [
+      {
+        type: 'advance_tax',
+        deadline: new Date('2024-06-15'),
+        description: 'First installment of Advance Tax (15% of tax liability)',
+        applicableTo: ['Business', 'Professionals', 'High earners'],
+        penalty: 'Interest under section 234B & 234C',
+        fiscalYear: '2024-25',
+        isRecurring: true
+      },
+      {
+        type: 'advance_tax',
+        deadline: new Date('2024-09-15'),
+        description: 'Second installment of Advance Tax (45% cumulative)',
+        applicableTo: ['Business', 'Professionals', 'High earners'],
+        penalty: 'Interest under section 234B & 234C',
+        fiscalYear: '2024-25',
+        isRecurring: true
+      },
+      {
+        type: 'advance_tax',
+        deadline: new Date('2024-12-15'),
+        description: 'Third installment of Advance Tax (75% cumulative)',
+        applicableTo: ['Business', 'Professionals', 'High earners'],
+        penalty: 'Interest under section 234B & 234C',
+        fiscalYear: '2024-25',
+        isRecurring: true
+      },
+      {
+        type: 'advance_tax',
+        deadline: new Date('2025-03-15'),
+        description: 'Fourth installment of Advance Tax (100%)',
+        applicableTo: ['Business', 'Professionals', 'High earners'],
+        penalty: 'Interest under section 234B & 234C',
+        fiscalYear: '2024-25',
+        isRecurring: true
+      },
+      {
+        type: 'income_tax',
+        deadline: new Date('2025-07-31'),
+        description: 'ITR filing for individuals (non-audit cases)',
+        applicableTo: ['Salaried', 'Individuals', 'HUF'],
+        penalty: 'Late fee up to ₹5,000',
+        fiscalYear: '2024-25',
+        isRecurring: true
+      },
+      {
+        type: 'gst',
+        deadline: new Date('2025-11-10'),
+        description: 'GSTR-1 (Outward supplies) - October 2024',
+        applicableTo: ['GST registered businesses'],
+        penalty: 'Late fee ₹50/day (CGST) + ₹50/day (SGST)',
+        fiscalYear: '2024-25',
+        isRecurring: true
+      },
+      {
+        type: 'gst',
+        deadline: new Date('2025-11-20'),
+        description: 'GSTR-3B (Summary return) - October 2024',
+        applicableTo: ['GST registered businesses'],
+        penalty: 'Late fee + Interest',
+        fiscalYear: '2024-25',
+        isRecurring: true
+      }
+    ];
+
+    await TaxDeadline.deleteMany({});
+    await TaxDeadline.insertMany(deadlines);
+    console.log('✅ Tax deadlines seeded');
+
+    console.log('🎉 Database seeded successfully!');
+  } catch (err) {
+    console.error('❌ Seed error:', err);
+  }
+}
+
+module.exports = seedDatabase;
