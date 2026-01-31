@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+Allow: /login
+Allow: /dashboard
+Allow: /gst
+Allow: /income-tax
+Allow: /resources
+
+Disallow: /api/
+Disallow: /admin/
+
+Sitemap: https://karsahayak.vercel.app/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# User-agent specific rules
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /

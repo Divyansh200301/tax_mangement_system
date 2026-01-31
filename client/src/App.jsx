@@ -1,11 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState, Suspense, lazy } from 'react'
 import { BrowserRouter, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom'
-import Login from './pages/Login'
-import Dashboard from './pages/Dashboard'
-import GSTCalculator from './pages/GSTCalculator'
-import IncomeTaxCalculator from './pages/IncomeTaxCalculator'
-import TaxResources from './pages/TaxResources'
-import Chatbot from './components/Chatbot'
+
+// Lazy load components for better performance
+const Login = lazy(() => import('./pages/Login'))
+const Dashboard = lazy(() => import('./pages/Dashboard'))
+const GSTCalculator = lazy(() => import('./pages/GSTCalculator'))
+const IncomeTaxCalculator = lazy(() => import('./pages/IncomeTaxCalculator'))
+const TaxResources = lazy(() => import('./pages/TaxResources'))
+const Chatbot = lazy(() => import('./components/Chatbot'))
+
+// Loading component
+function LoadingFallback() {
+  return (
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+      background: 'linear-gradient(135deg, #FF9933 0%, #FFFFFF 50%, #138808 100%)',
+    }}>
+      <div style={{
+        textAlign: 'center',
+        color: '#000080',
+        fontSize: '24px',
+        fontWeight: 'bold'
+      }}>
+        🇮🇳 Loading KarSahayak...
+      </div>
+    </div>
+  )
+}
 
 function Navigation({ onLogout }) {
   const location = useLocation()
@@ -134,15 +158,21 @@ function App() {
       <div className="chakra-watermark"></div>
       <div style={{ minHeight: '100vh' }}>
         {token && <Navigation onLogout={handleLogout} />}
-        <Routes>
-          <Route path="/login" element={<Login setToken={setToken} />} />
-          <Route path="/dashboard" element={token ? <Dashboard /> : <Navigate to="/login" />} />
-          <Route path="/gst" element={token ? <GSTCalculator /> : <Navigate to="/login" />} />
-          <Route path="/income-tax" element={token ? <IncomeTaxCalculator /> : <Navigate to="/login" />} />
-          <Route path="/resources" element={token ? <TaxResources /> : <Navigate to="/login" />} />
-          <Route path="/" element={<Navigate to={token ? "/dashboard" : "/login"} />} />
-        </Routes>
-        {token && <Chatbot />}
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
+            <Route path="/login" element={<Login setToken={setToken} />} />
+            <Route path="/dashboard" element={token ? <Dashboard /> : <Navigate to="/login" />} />
+            <Route path="/gst" element={token ? <GSTCalculator /> : <Navigate to="/login" />} />
+            <Route path="/income-tax" element={token ? <IncomeTaxCalculator /> : <Navigate to="/login" />} />
+            <Route path="/resources" element={token ? <TaxResources /> : <Navigate to="/login" />} />
+            <Route path="/" element={<Navigate to={token ? "/dashboard" : "/login"} />} />
+          </Routes>
+        </Suspense>
+        {token && (
+          <Suspense fallback={null}>
+            <Chatbot />
+          </Suspense>
+        )}
       </div>
       <footer style={{
         background: '#138808',
