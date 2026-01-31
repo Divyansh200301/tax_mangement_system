@@ -1,6 +1,32 @@
 const express = require('express');
 const { calculateComprehensiveIncomeTax, compareTaxRegimes } = require('../utils/taxUtils');
+const { IncomeTaxConfig } = require('../models/TaxConfig');
 const router = express.Router();
+
+// Get current tax configuration
+router.get('/config', async (req, res) => {
+  try {
+    const configs = await IncomeTaxConfig.find({ isActive: true }).sort({ financialYear: -1 });
+    res.json(configs);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
+// Get specific regime configuration
+router.get('/config/:regime', async (req, res) => {
+  try {
+    const config = await IncomeTaxConfig.findOne({ 
+      regime: req.params.regime.toUpperCase(),
+      isActive: true 
+    }).sort({ financialYear: -1 });
+    res.json(config || {});
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
 
 // Simple calculation (backward compatible)
 router.post('/calculate', (req, res) => {

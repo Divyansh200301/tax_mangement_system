@@ -12,6 +12,7 @@ const gstRoutes = require('./routes/gst');
 const incomeRoutes = require('./routes/incomeTax');
 const chatbotRoutes = require('./routes/chatbot');
 const resourceRoutes = require('./routes/resources');
+const adminRoutes = require('./routes/admin');
 const seedDatabase = require('./utils/seedDatabase');
 
 // Validate required environment variables
@@ -99,6 +100,7 @@ app.use('/api/gst', gstRoutes);
 app.use('/api/income', incomeRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/resources', resourceRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Health Check Endpoints
 app.get('/', (req, res) => res.json({ 

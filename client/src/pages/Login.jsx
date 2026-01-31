@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
@@ -179,6 +180,21 @@ function Login({ setToken }) {
               {loading ? '⏳ Processing...' : (isRegister ? '🚀 Register' : '🔐 Login')}
             </button>
           </form>
+
+          {!isRegister && (
+            <p style={{ textAlign: 'center', marginTop: '15px', fontSize: '14px' }}>
+              <Link 
+                to="/forgot-password" 
+                style={{ 
+                  color: '#1A73E8', 
+                  textDecoration: 'none',
+                  fontWeight: '500'
+                }}
+              >
+                🔑 Forgot Password?
+              </Link>
+            </p>
+          )}
 
           <p style={{ textAlign: 'center', marginTop: '24px', fontSize: '14px', color: '#6C757D' }}>
             {isRegister ? 'Already have an account?' : "Don't have an account?"}

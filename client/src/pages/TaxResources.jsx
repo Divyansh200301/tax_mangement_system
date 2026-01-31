@@ -151,7 +151,7 @@ function TaxResources() {
                 return (
                   <a
                     key={idx}
-                    href={resource.url}
+                    href={resource.officialUrl || resource.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{

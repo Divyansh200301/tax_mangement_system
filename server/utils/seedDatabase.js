@@ -1,8 +1,91 @@
 const mongoose = require('mongoose');
-const { GSTConfig, TaxResource, TaxDeadline } = require('../models/TaxConfig');
+const { GSTConfig, IncomeTaxConfig, TaxResource, TaxDeadline } = require('../models/TaxConfig');
 
 async function seedDatabase() {
   try {
+    // Seed Income Tax Configs
+    const incomeTaxConfigs = [
+      {
+        regime: 'OLD',
+        financialYear: '2024-25',
+        slabs: [
+          { upTo: 250000, rate: 0 },
+          { upTo: 500000, rate: 0.05 },
+          { upTo: 1000000, rate: 0.2 },
+          { upTo: Infinity, rate: 0.3 }
+        ],
+        seniorCitizenSlabs: [
+          { upTo: 300000, rate: 0 },
+          { upTo: 500000, rate: 0.05 },
+          { upTo: 1000000, rate: 0.2 },
+          { upTo: Infinity, rate: 0.3 }
+        ],
+        superSeniorSlabs: [
+          { upTo: 500000, rate: 0 },
+          { upTo: 1000000, rate: 0.2 },
+          { upTo: Infinity, rate: 0.3 }
+        ],
+        standardDeduction: 0,
+        allowsDeductions: true,
+        maxDeductions: {
+          section80C: 150000,
+          section80CCD1B: 50000,
+          section80D: {
+            maxSelf: 25000,
+            maxSelfSenior: 50000,
+            maxParents: 25000,
+            maxParentsSenior: 50000
+          },
+          section80E: Infinity,
+          section80G: Infinity,
+          section80TTA: 10000,
+          section80TTB: 50000
+        },
+        rebate87A: {
+          maxIncome: 500000,
+          rebateAmount: 12500
+        },
+        surcharge: [
+          { minIncome: 5000000, rate: 0.10 },
+          { minIncome: 10000000, rate: 0.15 },
+          { minIncome: 20000000, rate: 0.25 },
+          { minIncome: 50000000, rate: 0.37 }
+        ],
+        cess: 0.04,
+        isActive: true
+      },
+      {
+        regime: 'NEW',
+        financialYear: '2024-25',
+        slabs: [
+          { upTo: 300000, rate: 0 },
+          { upTo: 600000, rate: 0.05 },
+          { upTo: 900000, rate: 0.10 },
+          { upTo: 1200000, rate: 0.15 },
+          { upTo: 1500000, rate: 0.20 },
+          { upTo: Infinity, rate: 0.30 }
+        ],
+        standardDeduction: 50000,
+        allowsDeductions: false,
+        rebate87A: {
+          maxIncome: 700000,
+          rebateAmount: 25000
+        },
+        surcharge: [
+          { minIncome: 5000000, rate: 0.10 },
+          { minIncome: 10000000, rate: 0.15 },
+          { minIncome: 20000000, rate: 0.25 },
+          { minIncome: 50000000, rate: 0.37 }
+        ],
+        cess: 0.04,
+        isActive: true
+      }
+    ];
+
+    await IncomeTaxConfig.deleteMany({});
+    await IncomeTaxConfig.insertMany(incomeTaxConfigs);
+    console.log('✅ Income Tax configs seeded');
+
     // Seed GST Rates
     const gstRates = [
       {

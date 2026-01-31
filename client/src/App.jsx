@@ -7,6 +7,9 @@ const Dashboard = lazy(() => import('./pages/Dashboard'))
 const GSTCalculator = lazy(() => import('./pages/GSTCalculator'))
 const IncomeTaxCalculator = lazy(() => import('./pages/IncomeTaxCalculator'))
 const TaxResources = lazy(() => import('./pages/TaxResources'))
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'))
+const ResetPassword = lazy(() => import('./pages/ResetPassword'))
+const AdminPanel = lazy(() => import('./pages/AdminPanel'))
 const Chatbot = lazy(() => import('./components/Chatbot'))
 
 // Loading component
@@ -161,10 +164,13 @@ function App() {
         <Suspense fallback={<LoadingFallback />}>
           <Routes>
             <Route path="/login" element={<Login setToken={setToken} />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/dashboard" element={token ? <Dashboard /> : <Navigate to="/login" />} />
             <Route path="/gst" element={token ? <GSTCalculator /> : <Navigate to="/login" />} />
             <Route path="/income-tax" element={token ? <IncomeTaxCalculator /> : <Navigate to="/login" />} />
             <Route path="/resources" element={token ? <TaxResources /> : <Navigate to="/login" />} />
+            <Route path="/admin" element={token ? <AdminPanel /> : <Navigate to="/login" />} />
             <Route path="/" element={<Navigate to={token ? "/dashboard" : "/login"} />} />
           </Routes>
         </Suspense>

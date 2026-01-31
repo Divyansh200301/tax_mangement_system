@@ -9,13 +9,15 @@ A full-stack MERN application for Indian tax management with GST calculator, inc
 ## Features
 
 - **Authentication**: JWT-based user registration and login with role support (admin/accountant/user)
+- **Forgot Password**: Secure password reset with token-based email verification
 - **GST Calculator**: Calculate GST at various tax slabs (5%, 12%, 18%, 28%)
 - **Income Tax Calculator**: Estimate income tax based on Indian tax slabs with deductions (80C, 80D)
 - **Invoice Management**: Create and store invoices with GST details
-- **AI Chatbot (SomeUnique)**: Ask questions about GST and income tax, get instant calculations
+- **AI Chatbot (TaxMitra)**: Ask questions about GST and income tax, get instant calculations
   - Integrates with Google Gemini Flash One API (optional)
   - Falls back to rule-based responses if API is unavailable
 - **Responsive UI**: React-based frontend with clean, modern design
+- **Production Ready**: Security hardened with helmet, rate limiting, compression, and logging
 
 ## Prerequisites
 

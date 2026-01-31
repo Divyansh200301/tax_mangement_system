@@ -106,6 +106,13 @@ function Dashboard() {
       description: 'Access official government portals, tax deadlines, and filing guidelines.',
       link: '/resources',
       color: '#138808'
+    },
+    {
+      icon: '⚙️',
+      title: 'Admin Panel',
+      description: 'Manage dynamic tax configurations. Update tax slabs automatically.',
+      link: '/admin',
+      color: '#FF6B35'
     }
   ]
 
